@@ -1,0 +1,4 @@
+../Core/Src/InterruptControl.c:10:6:enable_IRQ	1
+../Core/Src/InterruptControl.c:16:6:disable_IRQ	1
+../Core/Src/InterruptControl.c:22:6:clear_pend_IRQ	1
+../Core/Src/InterruptControl.c:30:6:EXTI_ClearPendingIRQ	1
