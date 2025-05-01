@@ -102,7 +102,6 @@ int main(void)
   MX_GPIO_Init();
   MX_LTDC_Init();
   MX_RNG_Init();
-  __HAL_RCC_TIM2_CLK_SLEEP_ENABLE();
   MX_TIM2_Init();
   MX_SPI5_Init();
   MX_I2C3_Init();
@@ -112,21 +111,14 @@ int main(void)
   LCD_Visual_Demo();
   //HAL_Delay(5000);
   /* USER CODE END 2 */
+#if COMPILE_TOUCH_FUNCTIONS == 1 // This block will need to be deleted
+	LCD_Touch_Polling_Demo(); // This function Will not return
+#endif
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
-  while (1)
-  {
     /* USER CODE END WHILE */
-
-
-	#if COMPILE_TOUCH_FUNCTIONS == 1 // This block will need to be deleted
-	LCD_Touch_Polling_Demo(); // This function Will not return
-	#endif
-
-	LCD_Visual_Demo();
     /* USER CODE BEGIN 3 */
-  }
   /* USER CODE END 3 */
 }
 

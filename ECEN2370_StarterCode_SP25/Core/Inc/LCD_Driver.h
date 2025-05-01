@@ -101,6 +101,8 @@ void displayWinScreen(int);
 void clearGameBoard(void);
 void rng_init(void);
 void dropBallAI(void);
+void displayTieScreen(void);
+int checkTie(void);
 
 #endif // COMPILE_TOUCH_FUNCTIONS
 

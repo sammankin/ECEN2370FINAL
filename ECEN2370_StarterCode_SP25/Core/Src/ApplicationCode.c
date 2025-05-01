@@ -70,6 +70,7 @@ void LCD_Touch_Polling_Demo(void)
 				if (StaticTouchData.x < 120){
 					oneplayer_twoplayer = true;
 					gameplayScreen();
+					clearGameBoard();
 					while(gameReset){
 						moveCoin(126, 150);
 					}
@@ -77,13 +78,13 @@ void LCD_Touch_Polling_Demo(void)
 				else if (StaticTouchData.x > 120){
 					oneplayer_twoplayer = false;
 					gameplayScreen();
+					clearGameBoard();
 					while(gameReset){
 						moveCoin(126, 150);
 					}
 
 				}
 		}
-		break;
 	}
 }
 #endif // COMPILE_TOUCH_FUNCTIONS

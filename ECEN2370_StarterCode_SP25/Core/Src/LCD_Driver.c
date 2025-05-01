@@ -26,7 +26,8 @@ static RNG_HandleTypeDef *hrng;
 static int endTime;
 static int startTime;
 extern bool gameReset;
-extern bool gameState;
+static int playerOneScore;
+static int playerTwoScore;
 
 
 void rng_init(void){
@@ -493,6 +494,12 @@ void dropBallAI(void){
 		            	displayWinScreen(winner);
 		            }
 
+		            int tie = checkTie();
+
+		            if(tie == 1){
+		            	displayTieScreen();
+		            }
+
 		            drawBallonBoard();
 		            break;
 		        }
@@ -521,7 +528,14 @@ void dropBallPlayer(void){
 	            	displayWinScreen(winner);
 	            }
 
+	            int tie = checkTie();
+
+	            if(tie == 1){
+	            	displayTieScreen();
+	            }
+
 	            drawBallonBoard();
+
 	            break;
 	        }
 	    }
@@ -558,7 +572,26 @@ int checkWin(void){
 
 }
 
+int checkTie(void) {
+
+	if (checkWin() != 0) {
+        return 0;
+    }
+
+    for (int col = 0; col < 7; col++) {
+        for (int row = 0; row < 6; row++) {
+            if (gameboard[col][row] == 0) {
+                return 0;
+            }
+        }
+    }
+
+
+    return 1;
+}
+
 void displayWinScreen(int winner) {
+
 
 		if (winner == 1){
 			LCD_Clear(0, LCD_COLOR_RED);
@@ -581,10 +614,24 @@ void displayWinScreen(int winner) {
 			LCD_DisplayChar(115,250,'I');
 			LCD_DisplayChar(135,250,'N');
 			LCD_DisplayChar(60,150,'T');
-						LCD_DisplayChar(75,150,'i');
-						LCD_DisplayChar(90,150,'m');
-						LCD_DisplayChar(105,150,'e');
-						LCD_DisplayChar(120,150,':');
+			LCD_DisplayChar(75,150,'i');
+			LCD_DisplayChar(90,150,'m');
+			LCD_DisplayChar(105,150,'e');
+			LCD_DisplayChar(120,150,':');
+
+			LCD_DisplayChar(10,185,'B');
+			LCD_DisplayChar(25,185,'L');
+			LCD_DisplayChar(40,185,'A');
+			LCD_DisplayChar(55,185,'C');
+			LCD_DisplayChar(70,185,'K');
+			LCD_DisplayChar(80,185,':');
+
+			LCD_DisplayChar(150,185,'R');
+			LCD_DisplayChar(165,185,'E');
+			LCD_DisplayChar(180,185,'D');
+			LCD_DisplayChar(190,185,':');
+
+						playerOneScore += 1;
 
 						endTime = (HAL_GetTick() - startTime)/1000;
 
@@ -596,15 +643,29 @@ void displayWinScreen(int winner) {
 						    LCD_DisplayChar(145 + (i * 20), 150, buffer[i]);
 						}
 
+						char scoreBuffer3[10];
+
+						sprintf(scoreBuffer3, "%d", playerTwoScore);
+
+						for(int i = 0; scoreBuffer3[i] != '\0'; i++){
+							LCD_DisplayChar(110 + (i*20),185, scoreBuffer3[i]);
+						}
+
+						char scoreBuffer4[10];
+
+						sprintf(scoreBuffer4, "%d", playerOneScore);
+
+						for(int i = 0; scoreBuffer4[i] != '\0'; i++){
+								LCD_DisplayChar(200 + (i*20),185, scoreBuffer4[i]);
+						}
+
 
 						while(gameReset)
 						{
-							gameState = false;
 							if(returnTouchStateAndLocation(&StaticTouchData) == STMPE811_State_Pressed){
 
 								if(StaticTouchData.y > 200){
 									gameReset = false;
-									gameState = true;
 								}
 
 							}
@@ -642,6 +703,39 @@ void displayWinScreen(int winner) {
 			LCD_DisplayChar(105,150,'e');
 			LCD_DisplayChar(120,150,':');
 
+			LCD_DisplayChar(10,185,'B');
+			LCD_DisplayChar(25,185,'L');
+			LCD_DisplayChar(40,185,'A');
+			LCD_DisplayChar(55,185,'C');
+			LCD_DisplayChar(70,185,'K');
+			LCD_DisplayChar(80,185,':');
+
+			LCD_DisplayChar(150,185,'R');
+			LCD_DisplayChar(165,185,'E');
+			LCD_DisplayChar(180,185,'D');
+			LCD_DisplayChar(180,185,':');
+
+
+
+			playerTwoScore += 1;
+
+			char scoreBuffer[10];
+
+			sprintf(scoreBuffer, "%d", playerTwoScore);
+
+			for(int i = 0; scoreBuffer[i] != '\0'; i++){
+				LCD_DisplayChar(110 + (i*20),185, scoreBuffer[i]);
+			}
+
+			char scoreBuffer2[10];
+
+			sprintf(scoreBuffer2, "%d", playerOneScore);
+
+			for(int i = 0; scoreBuffer2[i] != '\0'; i++){
+				LCD_DisplayChar(200 + (i*20),185, scoreBuffer2[i]);
+			}
+
+
 			endTime = (HAL_GetTick() - startTime)/1000;
 
 			char buffer[10];
@@ -655,12 +749,11 @@ void displayWinScreen(int winner) {
 
 			while(gameReset)
 			{
-				gameState = false;
+
 				if(returnTouchStateAndLocation(&StaticTouchData) == STMPE811_State_Pressed){
 
 					if(StaticTouchData.y > 200){
 						gameReset = false;
-						gameState = true;
 					}
 
 				}
@@ -668,6 +761,55 @@ void displayWinScreen(int winner) {
 
 
 		}
+
+}
+
+void displayTieScreen(void){
+
+	LCD_Clear(0, LCD_COLOR_BLACK);
+	LCD_SetTextColor(LCD_COLOR_WHITE);
+	LCD_SetFont(&Font16x24);
+	LCD_DisplayChar(110,100,'T');
+	LCD_DisplayChar(125,100,'I');
+	LCD_DisplayChar(140,100,'E');
+
+	LCD_DisplayChar(85,220,'P');
+	LCD_DisplayChar(105,220,'L');
+	LCD_DisplayChar(125,220,'A');
+	LCD_DisplayChar(145,220,'Y');
+	LCD_DisplayChar(50,250,'A');
+	LCD_DisplayChar(75,250,'G');
+	LCD_DisplayChar(95,250,'A');
+	LCD_DisplayChar(115,250,'I');
+	LCD_DisplayChar(135,250,'N');
+	LCD_DisplayChar(60,150,'T');
+	LCD_DisplayChar(75,150,'i');
+	LCD_DisplayChar(90,150,'m');
+	LCD_DisplayChar(105,150,'e');
+	LCD_DisplayChar(120,150,':');
+
+	endTime = (HAL_GetTick() - startTime)/1000;
+
+			char buffer[10];
+
+			sprintf(buffer, "%d", endTime);
+
+			for (int i = 0; buffer[i] != '\0'; i++) {
+			    LCD_DisplayChar(145 + (i * 20), 150, buffer[i]);
+			}
+
+
+	while(gameReset)
+	{
+
+		if(returnTouchStateAndLocation(&StaticTouchData) == STMPE811_State_Pressed){
+			if(StaticTouchData.y > 200){
+				gameReset = false;
+			}
+
+		}
+	}
+
 
 }
 
