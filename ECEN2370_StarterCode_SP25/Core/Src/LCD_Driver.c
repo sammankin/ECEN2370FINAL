@@ -22,7 +22,7 @@ static STMPE811_TouchData StaticTouchData;
 static gameCoin coin;
 static bool player1;
 static int gameboard[7][6];
-static RNG_HandleTypeDef *hrng;
+extern RNG_HandleTypeDef hrng;
 static int endTime;
 static int startTime;
 extern bool gameReset;
@@ -30,10 +30,10 @@ static int playerOneScore;
 static int playerTwoScore;
 
 
-void rng_init(void){
-	hrng->Instance = RNG;
-	HAL_RNG_Init(hrng);
-}
+//void rng_init(void){
+//	hrng->Instance = RNG;
+//	HAL_RNG_Init(hrng);
+//}
 
 
 
@@ -473,9 +473,9 @@ void drawBallonBoard(void){
 
 void dropBallAI(void){
 
-	uint32_t random;
+	uint32_t random = 0;
 
-	HAL_RNG_GenerateRandomNumber(hrng, &random);
+	HAL_RNG_GenerateRandomNumber(&hrng, &random);
 	int column = random % 7;
 
 		    if (column < 0 || column > 6) return;
@@ -548,19 +548,27 @@ int checkWin(void){
 	            int player = gameboard[col][row];
 	            if (player == 0) continue;
 
+	            //horizontal
+
 	            if (col <= 3 && player == gameboard[col+1][row] &&
 	                            player == gameboard[col+2][row] &&
 	                            player == gameboard[col+3][row])
 	                return player;
 
+	            //verticle
+
 	            if (row <= 2 && player == gameboard[col][row+1] &&
 	                            player == gameboard[col][row+2] &&
 	                            player == gameboard[col][row+3])
 	                return player;
+
+	            //diagonal down right
 	            if (col <= 3 && row <= 2 && player == gameboard[col+1][row+1] &&
 	                                         player == gameboard[col+2][row+2] &&
 	                                         player == gameboard[col+3][row+3])
 	                return player;
+
+	            //diagonal up right
 	            if (col <= 3 && row >= 3 && player == gameboard[col+1][row-1] &&
 	                                         player == gameboard[col+2][row-2] &&
 	                                         player == gameboard[col+3][row-3])

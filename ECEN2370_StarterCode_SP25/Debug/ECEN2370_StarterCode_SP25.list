@@ -23,31 +23,31 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, ALLOC, LOAD, DATA
   9 .ccmram       00000000  10000000  10000000  0000b078  2**0
                   CONTENTS
- 10 .bss          00025d84  20000078  20000078  0000b078  2**2
+ 10 .bss          00025d80  20000078  20000078  0000b078  2**2
                   ALLOC
- 11 ._user_heap_stack 00000604  20025dfc  20025dfc  0000b078  2**0
+ 11 ._user_heap_stack 00000600  20025df8  20025df8  0000b078  2**0
                   ALLOC
  12 .ARM.attributes 00000030  00000000  00000000  0000b078  2**0
                   CONTENTS, READONLY
- 13 .debug_info   00014199  00000000  00000000  0000b0a8  2**0
+ 13 .debug_info   0001416e  00000000  00000000  0000b0a8  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 14 .debug_abbrev 000031ef  00000000  00000000  0001f241  2**0
+ 14 .debug_abbrev 000031ef  00000000  00000000  0001f216  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 15 .debug_aranges 00001458  00000000  00000000  00022430  2**3
+ 15 .debug_aranges 00001450  00000000  00000000  00022408  2**3
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 16 .debug_rnglists 00000fab  00000000  00000000  00023888  2**0
+ 16 .debug_rnglists 00000fa5  00000000  00000000  00023858  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 17 .debug_macro  000271e3  00000000  00000000  00024833  2**0
+ 17 .debug_macro  000271e3  00000000  00000000  000247fd  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 18 .debug_line   00018b5b  00000000  00000000  0004ba16  2**0
+ 18 .debug_line   00018b40  00000000  00000000  0004b9e0  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 19 .debug_str    000e2c5d  00000000  00000000  00064571  2**0
+ 19 .debug_str    000e2c54  00000000  00000000  00064520  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 20 .comment      00000043  00000000  00000000  001471ce  2**0
+ 20 .comment      00000043  00000000  00000000  00147174  2**0
                   CONTENTS, READONLY
- 21 .debug_frame  00005db0  00000000  00000000  00147214  2**2
+ 21 .debug_frame  00005d94  00000000  00000000  001471b8  2**2
                   CONTENTS, READONLY, DEBUGGING, OCTETS
- 22 .debug_line_str 0000006b  00000000  00000000  0014cfc4  2**0
+ 22 .debug_line_str 0000006b  00000000  00000000  0014cf4c  2**0
                   CONTENTS, READONLY, DEBUGGING, OCTETS
 
 Disassembly of section .text:
@@ -1010,7 +1010,7 @@ void LTCD_Layer_Init(uint8_t LayerIndex)
  800092a:	3740      	adds	r7, #64	@ 0x40
  800092c:	46bd      	mov	sp, r7
  800092e:	bd80      	pop	{r7, pc}
- 8000930:	20000248 	.word	0x20000248
+ 8000930:	20000244 	.word	0x20000244
  8000934:	200000a0 	.word	0x200000a0
 
 08000938 <LTCD__Init>:
@@ -1220,7 +1220,7 @@ void LCD_Draw_Pixel(uint16_t x, uint16_t y, uint16_t color)
  8000a62:	3708      	adds	r7, #8
  8000a64:	46bd      	mov	sp, r7
  8000a66:	bd80      	pop	{r7, pc}
- 8000a68:	20000248 	.word	0x20000248
+ 8000a68:	20000244 	.word	0x20000244
  8000a6c:	08008498 	.word	0x08008498
  8000a70:	080084ac 	.word	0x080084ac
 
@@ -1406,7 +1406,7 @@ void LCD_Clear(uint8_t LayerIndex, uint16_t Color)
  8000ba0:	46bd      	mov	sp, r7
  8000ba2:	f85d 7b04 	ldr.w	r7, [sp], #4
  8000ba6:	4770      	bx	lr
- 8000ba8:	20000248 	.word	0x20000248
+ 8000ba8:	20000244 	.word	0x20000244
 
 08000bac <LCD_SetTextColor>:
 
@@ -1943,7 +1943,7 @@ void gameplayScreen(void){
  8000fca:	bf00      	nop
  8000fcc:	20000184 	.word	0x20000184
  8000fd0:	20000188 	.word	0x20000188
- 8000fd4:	2000023c 	.word	0x2000023c
+ 8000fd4:	20000238 	.word	0x20000238
 
 08000fd8 <moveCoin>:
 
@@ -2289,14 +2289,14 @@ void dropBallAI(void){
  8001222:	b086      	sub	sp, #24
  8001224:	af00      	add	r7, sp, #0
 
-	uint32_t random;
+	uint32_t random = 0;
+ 8001226:	2300      	movs	r3, #0
+ 8001228:	607b      	str	r3, [r7, #4]
 
-	HAL_RNG_GenerateRandomNumber(hrng, &random);
- 8001226:	4b2f      	ldr	r3, [pc, #188]	@ (80012e4 <dropBallAI+0xc4>)
- 8001228:	681b      	ldr	r3, [r3, #0]
- 800122a:	1d3a      	adds	r2, r7, #4
- 800122c:	4611      	mov	r1, r2
- 800122e:	4618      	mov	r0, r3
+	HAL_RNG_GenerateRandomNumber(&hrng, &random);
+ 800122a:	1d3b      	adds	r3, r7, #4
+ 800122c:	4619      	mov	r1, r3
+ 800122e:	482d      	ldr	r0, [pc, #180]	@ (80012e4 <dropBallAI+0xc4>)
  8001230:	f005 fa14 	bl	800665c <HAL_RNG_GenerateRandomNumber>
 	int column = random % 7;
  8001234:	6879      	ldr	r1, [r7, #4]
@@ -2407,7 +2407,7 @@ void dropBallAI(void){
  80012de:	46bd      	mov	sp, r7
  80012e0:	bd80      	pop	{r7, pc}
  80012e2:	bf00      	nop
- 80012e4:	20000234 	.word	0x20000234
+ 80012e4:	20025b9c 	.word	0x20025b9c
  80012e8:	24924925 	.word	0x24924925
  80012ec:	2000018c 	.word	0x2000018c
 
@@ -2567,6 +2567,8 @@ int checkWin(void){
  80013e6:	2b00      	cmp	r3, #0
  80013e8:	f000 80c8 	beq.w	800157c <checkWin+0x1c0>
 
+	            //horizontal
+
 	            if (col <= 3 && player == gameboard[col+1][row] &&
  80013ec:	68fb      	ldr	r3, [r7, #12]
  80013ee:	2b03      	cmp	r3, #3
@@ -2618,6 +2620,8 @@ int checkWin(void){
  8001446:	687b      	ldr	r3, [r7, #4]
  8001448:	e0a8      	b.n	800159c <checkWin+0x1e0>
 
+	            //verticle
+
 	            if (row <= 2 && player == gameboard[col][row+1] &&
  800144a:	68bb      	ldr	r3, [r7, #8]
  800144c:	2b02      	cmp	r3, #2
@@ -2668,6 +2672,8 @@ int checkWin(void){
 	                return player;
  80014a4:	687b      	ldr	r3, [r7, #4]
  80014a6:	e079      	b.n	800159c <checkWin+0x1e0>
+
+	            //diagonal down right
 	            if (col <= 3 && row <= 2 && player == gameboard[col+1][row+1] &&
  80014a8:	68fb      	ldr	r3, [r7, #12]
  80014aa:	2b03      	cmp	r3, #3
@@ -2724,6 +2730,8 @@ int checkWin(void){
 	                return player;
  800150e:	687b      	ldr	r3, [r7, #4]
  8001510:	e044      	b.n	800159c <checkWin+0x1e0>
+
+	            //diagonal up right
 	            if (col <= 3 && row >= 3 && player == gameboard[col+1][row-1] &&
  8001512:	68fb      	ldr	r3, [r7, #12]
  8001514:	2b03      	cmp	r3, #3
@@ -3213,12 +3221,12 @@ void displayWinScreen(int winner) {
 						while(gameReset)
  800187a:	e01a      	b.n	80018b2 <displayWinScreen+0x2a2>
  800187c:	20000004 	.word	0x20000004
- 8001880:	20000240 	.word	0x20000240
- 8001884:	2000023c 	.word	0x2000023c
+ 8001880:	2000023c 	.word	0x2000023c
+ 8001884:	20000238 	.word	0x20000238
  8001888:	10624dd3 	.word	0x10624dd3
- 800188c:	20000238 	.word	0x20000238
+ 800188c:	20000234 	.word	0x20000234
  8001890:	080084c0 	.word	0x080084c0
- 8001894:	20000244 	.word	0x20000244
+ 8001894:	20000240 	.word	0x20000240
 						{
 							if(returnTouchStateAndLocation(&StaticTouchData) == STMPE811_State_Pressed){
  8001898:	48b0      	ldr	r0, [pc, #704]	@ (8001b5c <displayWinScreen+0x54c>)
@@ -3621,12 +3629,12 @@ void displayWinScreen(int winner) {
  8001b5c:	2000017c 	.word	0x2000017c
  8001b60:	20000000 	.word	0x20000000
  8001b64:	20000004 	.word	0x20000004
- 8001b68:	20000244 	.word	0x20000244
+ 8001b68:	20000240 	.word	0x20000240
  8001b6c:	080084c0 	.word	0x080084c0
- 8001b70:	20000240 	.word	0x20000240
- 8001b74:	2000023c 	.word	0x2000023c
+ 8001b70:	2000023c 	.word	0x2000023c
+ 8001b74:	20000238 	.word	0x20000238
  8001b78:	10624dd3 	.word	0x10624dd3
- 8001b7c:	20000238 	.word	0x20000238
+ 8001b7c:	20000234 	.word	0x20000234
 
 08001b80 <displayTieScreen>:
 
@@ -3826,9 +3834,9 @@ void displayTieScreen(void){
  8001cd4:	bd80      	pop	{r7, pc}
  8001cd6:	bf00      	nop
  8001cd8:	20000004 	.word	0x20000004
- 8001cdc:	2000023c 	.word	0x2000023c
+ 8001cdc:	20000238 	.word	0x20000238
  8001ce0:	10624dd3 	.word	0x10624dd3
- 8001ce4:	20000238 	.word	0x20000238
+ 8001ce4:	20000234 	.word	0x20000234
  8001ce8:	080084c0 	.word	0x080084c0
  8001cec:	2000017c 	.word	0x2000017c
  8001cf0:	20000000 	.word	0x20000000
@@ -4648,7 +4656,7 @@ static void SPI_Init(void)
 }
  8002234:	bf00      	nop
  8002236:	bd80      	pop	{r7, pc}
- 8002238:	20025a48 	.word	0x20025a48
+ 8002238:	20025a44 	.word	0x20025a44
  800223c:	40015000 	.word	0x40015000
 
 08002240 <SPI_Write>:
@@ -4694,7 +4702,7 @@ static void SPI_Write(uint16_t Value)
  8002270:	bd80      	pop	{r7, pc}
  8002272:	bf00      	nop
  8002274:	2000000c 	.word	0x2000000c
- 8002278:	20025a48 	.word	0x20025a48
+ 8002278:	20025a44 	.word	0x20025a44
 
 0800227c <SPI_Error>:
 
@@ -4717,7 +4725,7 @@ static void SPI_Error(void)
  800228a:	bf00      	nop
  800228c:	bd80      	pop	{r7, pc}
  800228e:	bf00      	nop
- 8002290:	20025a48 	.word	0x20025a48
+ 8002290:	20025a44 	.word	0x20025a44
 
 08002294 <SPI_MspInit>:
 /**
@@ -4932,7 +4940,7 @@ void LCD_IO_Init(void)
  80023e2:	3720      	adds	r7, #32
  80023e4:	46bd      	mov	sp, r7
  80023e6:	bd80      	pop	{r7, pc}
- 80023e8:	20025aa0 	.word	0x20025aa0
+ 80023e8:	20025a9c 	.word	0x20025a9c
  80023ec:	40023800 	.word	0x40023800
  80023f0:	40020c00 	.word	0x40020c00
  80023f4:	40020800 	.word	0x40020800
@@ -5336,7 +5344,7 @@ static void MX_I2C3_Init(void)
 }
  8002614:	bf00      	nop
  8002616:	bd80      	pop	{r7, pc}
- 8002618:	20025aa4 	.word	0x20025aa4
+ 8002618:	20025aa0 	.word	0x20025aa0
  800261c:	40005c00 	.word	0x40005c00
  8002620:	000186a0 	.word	0x000186a0
 
@@ -5570,7 +5578,7 @@ static void MX_LTDC_Init(void)
  800277a:	3768      	adds	r7, #104	@ 0x68
  800277c:	46bd      	mov	sp, r7
  800277e:	bd80      	pop	{r7, pc}
- 8002780:	20025af8 	.word	0x20025af8
+ 8002780:	20025af4 	.word	0x20025af4
  8002784:	40016800 	.word	0x40016800
 
 08002788 <MX_RNG_Init>:
@@ -5609,7 +5617,7 @@ static void MX_RNG_Init(void)
  80027a2:	bf00      	nop
  80027a4:	bd80      	pop	{r7, pc}
  80027a6:	bf00      	nop
- 80027a8:	20025ba0 	.word	0x20025ba0
+ 80027a8:	20025b9c 	.word	0x20025b9c
  80027ac:	50060800 	.word	0x50060800
 
 080027b0 <MX_SPI5_Init>:
@@ -5691,7 +5699,7 @@ static void MX_SPI5_Init(void)
 }
  8002810:	bf00      	nop
  8002812:	bd80      	pop	{r7, pc}
- 8002814:	20025bb0 	.word	0x20025bb0
+ 8002814:	20025bac 	.word	0x20025bac
  8002818:	40015000 	.word	0x40015000
 
 0800281c <MX_TIM2_Init>:
@@ -5801,7 +5809,7 @@ static void MX_TIM2_Init(void)
  80028aa:	3718      	adds	r7, #24
  80028ac:	46bd      	mov	sp, r7
  80028ae:	bd80      	pop	{r7, pc}
- 80028b0:	20025c08 	.word	0x20025c08
+ 80028b0:	20025c04 	.word	0x20025c04
 
 080028b4 <MX_GPIO_Init>:
   * @brief GPIO Initialization Function
@@ -7822,7 +7830,7 @@ void verifyHAL_I2C_IS_OKAY(){
  800345c:	f85d 7b04 	ldr.w	r7, [sp], #4
  8003460:	4770      	bx	lr
  8003462:	bf00      	nop
- 8003464:	20025ca4 	.word	0x20025ca4
+ 8003464:	20025ca0 	.word	0x20025ca0
 
 08003468 <I2C3_Init>:
 
@@ -7900,7 +7908,7 @@ static void I2C3_Init()
  80034d0:	bd80      	pop	{r7, pc}
  80034d2:	bf00      	nop
  80034d4:	40023800 	.word	0x40023800
- 80034d8:	20025c50 	.word	0x20025c50
+ 80034d8:	20025c4c 	.word	0x20025c4c
  80034dc:	40005c00 	.word	0x40005c00
  80034e0:	000186a0 	.word	0x000186a0
 
@@ -8049,8 +8057,8 @@ void I2C3_Write(uint16_t devAddr, uint8_t reg, uint8_t data)
  80035d0:	bd80      	pop	{r7, pc}
  80035d2:	bf00      	nop
  80035d4:	0003d090 	.word	0x0003d090
- 80035d8:	20025c50 	.word	0x20025c50
- 80035dc:	20025ca4 	.word	0x20025ca4
+ 80035d8:	20025c4c 	.word	0x20025c4c
+ 80035dc:	20025ca0 	.word	0x20025ca0
 
 080035e0 <I2C3_Read>:
 
@@ -8092,8 +8100,8 @@ void I2C3_Read(uint8_t address, uint8_t reg, uint8_t * rxData)
  800361c:	46bd      	mov	sp, r7
  800361e:	bd80      	pop	{r7, pc}
  8003620:	0003d090 	.word	0x0003d090
- 8003624:	20025c50 	.word	0x20025c50
- 8003628:	20025ca4 	.word	0x20025ca4
+ 8003624:	20025c4c 	.word	0x20025c4c
+ 8003628:	20025ca0 	.word	0x20025ca0
 
 0800362c <I2C3_MulitByteRead>:
 
@@ -8132,7 +8140,7 @@ void I2C3_MulitByteRead(uint8_t address, uint8_t reg, uint8_t * rxData, uint16_t
  8003664:	bd80      	pop	{r7, pc}
  8003666:	bf00      	nop
  8003668:	0003d090 	.word	0x0003d090
- 800366c:	20025c50 	.word	0x20025c50
+ 800366c:	20025c4c 	.word	0x20025c4c
 
 08003670 <TM_STMPE811_ReadX>:
 
@@ -8606,8 +8614,8 @@ void *_sbrk(ptrdiff_t incr)
  8003912:	bd80      	pop	{r7, pc}
  8003914:	20030000 	.word	0x20030000
  8003918:	00000400 	.word	0x00000400
- 800391c:	20025ca8 	.word	0x20025ca8
- 8003920:	20025e00 	.word	0x20025e00
+ 800391c:	20025ca4 	.word	0x20025ca4
+ 8003920:	20025df8 	.word	0x20025df8
 
 08003924 <SystemInit>:
   *         configuration.
@@ -8729,7 +8737,7 @@ LoopFillZerobss:
   ldr r2, =_sbss
  8003990:	20000078 	.word	0x20000078
   ldr r4, =_ebss
- 8003994:	20025dfc 	.word	0x20025dfc
+ 8003994:	20025df8 	.word	0x20025df8
 
 08003998 <ADC_IRQHandler>:
  * @retval None       
@@ -8892,7 +8900,7 @@ __weak void HAL_IncTick(void)
  8003a5c:	4770      	bx	lr
  8003a5e:	bf00      	nop
  8003a60:	20000018 	.word	0x20000018
- 8003a64:	20025cac 	.word	0x20025cac
+ 8003a64:	20025ca8 	.word	0x20025ca8
 
 08003a68 <HAL_GetTick>:
   * @note This function is declared as __weak to be overwritten in case of other 
@@ -8912,7 +8920,7 @@ __weak uint32_t HAL_GetTick(void)
  8003a74:	f85d 7b04 	ldr.w	r7, [sp], #4
  8003a78:	4770      	bx	lr
  8003a7a:	bf00      	nop
- 8003a7c:	20025cac 	.word	0x20025cac
+ 8003a7c:	20025ca8 	.word	0x20025ca8
 
 08003a80 <HAL_Delay>:
   *       implementations in user file.
@@ -18541,7 +18549,7 @@ HAL_StatusTypeDef HAL_TIMEx_MasterConfigSynchronization(TIM_HandleTypeDef *htim,
  8007314:	08007fef 	.word	0x08007fef
  8007318:	08008027 	.word	0x08008027
  800731c:	0800804b 	.word	0x0800804b
- 8007320:	20025cb0 	.word	0x20025cb0
+ 8007320:	20025cac 	.word	0x20025cac
 
 08007324 <stdio_exit_handler>:
  8007324:	4a02      	ldr	r2, [pc, #8]	@ (8007330 <stdio_exit_handler+0xc>)
@@ -18576,9 +18584,9 @@ HAL_StatusTypeDef HAL_TIMEx_MasterConfigSynchronization(TIM_HandleTypeDef *htim,
  8007368:	f000 bdfc 	b.w	8007f64 <_fflush_r>
  800736c:	bd10      	pop	{r4, pc}
  800736e:	bf00      	nop
- 8007370:	20025cb0 	.word	0x20025cb0
- 8007374:	20025d18 	.word	0x20025d18
- 8007378:	20025d80 	.word	0x20025d80
+ 8007370:	20025cac 	.word	0x20025cac
+ 8007374:	20025d14 	.word	0x20025d14
+ 8007378:	20025d7c 	.word	0x20025d7c
 
 0800737c <global_stdio_init.part.0>:
  800737c:	b510      	push	{r4, lr}
@@ -18599,21 +18607,21 @@ HAL_StatusTypeDef HAL_TIMEx_MasterConfigSynchronization(TIM_HandleTypeDef *htim,
  80073a2:	e8bd 4010 	ldmia.w	sp!, {r4, lr}
  80073a6:	2112      	movs	r1, #18
  80073a8:	f7ff bf86 	b.w	80072b8 <std>
- 80073ac:	20025de8 	.word	0x20025de8
- 80073b0:	20025cb0 	.word	0x20025cb0
+ 80073ac:	20025de4 	.word	0x20025de4
+ 80073b0:	20025cac 	.word	0x20025cac
  80073b4:	08007325 	.word	0x08007325
 
 080073b8 <__sfp_lock_acquire>:
  80073b8:	4801      	ldr	r0, [pc, #4]	@ (80073c0 <__sfp_lock_acquire+0x8>)
  80073ba:	f000 b884 	b.w	80074c6 <__retarget_lock_acquire_recursive>
  80073be:	bf00      	nop
- 80073c0:	20025ded 	.word	0x20025ded
+ 80073c0:	20025de9 	.word	0x20025de9
 
 080073c4 <__sfp_lock_release>:
  80073c4:	4801      	ldr	r0, [pc, #4]	@ (80073cc <__sfp_lock_release+0x8>)
  80073c6:	f000 b87f 	b.w	80074c8 <__retarget_lock_release_recursive>
  80073ca:	bf00      	nop
- 80073cc:	20025ded 	.word	0x20025ded
+ 80073cc:	20025de9 	.word	0x20025de9
 
 080073d0 <__sinit>:
  80073d0:	b510      	push	{r4, lr}
@@ -18633,7 +18641,7 @@ HAL_StatusTypeDef HAL_TIMEx_MasterConfigSynchronization(TIM_HandleTypeDef *htim,
  80073f4:	e7f2      	b.n	80073dc <__sinit+0xc>
  80073f6:	bf00      	nop
  80073f8:	0800733d 	.word	0x0800733d
- 80073fc:	20025de8 	.word	0x20025de8
+ 80073fc:	20025de4 	.word	0x20025de4
 
 08007400 <_fwalk_sglue>:
  8007400:	e92d 43f8 	stmdb	sp!, {r3, r4, r5, r6, r7, r8, r9, lr}
@@ -19312,7 +19320,7 @@ HAL_StatusTypeDef HAL_TIMEx_MasterConfigSynchronization(TIM_HandleTypeDef *htim,
  8007a36:	d1f2      	bne.n	8007a1e <sbrk_aligned+0x22>
  8007a38:	e7ef      	b.n	8007a1a <sbrk_aligned+0x1e>
  8007a3a:	bf00      	nop
- 8007a3c:	20025df0 	.word	0x20025df0
+ 8007a3c:	20025dec 	.word	0x20025dec
 
 08007a40 <_malloc_r>:
  8007a40:	e92d 43f8 	stmdb	sp!, {r3, r4, r5, r6, r7, r8, r9, lr}
@@ -19422,7 +19430,7 @@ HAL_StatusTypeDef HAL_TIMEx_MasterConfigSynchronization(TIM_HandleTypeDef *htim,
  8007b36:	6005      	str	r5, [r0, #0]
  8007b38:	e7d6      	b.n	8007ae8 <_malloc_r+0xa8>
  8007b3a:	bf00      	nop
- 8007b3c:	20025df4 	.word	0x20025df4
+ 8007b3c:	20025df0 	.word	0x20025df0
 
 08007b40 <_printf_common>:
  8007b40:	e92d 47f0 	stmdb	sp!, {r4, r5, r6, r7, r8, r9, sl, lr}
@@ -19917,13 +19925,13 @@ HAL_StatusTypeDef HAL_TIMEx_MasterConfigSynchronization(TIM_HandleTypeDef *htim,
  8007fb4:	4801      	ldr	r0, [pc, #4]	@ (8007fbc <__malloc_lock+0x8>)
  8007fb6:	f7ff ba86 	b.w	80074c6 <__retarget_lock_acquire_recursive>
  8007fba:	bf00      	nop
- 8007fbc:	20025dec 	.word	0x20025dec
+ 8007fbc:	20025de8 	.word	0x20025de8
 
 08007fc0 <__malloc_unlock>:
  8007fc0:	4801      	ldr	r0, [pc, #4]	@ (8007fc8 <__malloc_unlock+0x8>)
  8007fc2:	f7ff ba81 	b.w	80074c8 <__retarget_lock_release_recursive>
  8007fc6:	bf00      	nop
- 8007fc8:	20025dec 	.word	0x20025dec
+ 8007fc8:	20025de8 	.word	0x20025de8
 
 08007fcc <__sread>:
  8007fcc:	b510      	push	{r4, lr}
@@ -20274,7 +20282,7 @@ HAL_StatusTypeDef HAL_TIMEx_MasterConfigSynchronization(TIM_HandleTypeDef *htim,
  80082e6:	b103      	cbz	r3, 80082ea <_close_r+0x1a>
  80082e8:	6023      	str	r3, [r4, #0]
  80082ea:	bd38      	pop	{r3, r4, r5, pc}
- 80082ec:	20025df8 	.word	0x20025df8
+ 80082ec:	20025df4 	.word	0x20025df4
 
 080082f0 <_fstat_r>:
  80082f0:	b538      	push	{r3, r4, r5, lr}
@@ -20292,7 +20300,7 @@ HAL_StatusTypeDef HAL_TIMEx_MasterConfigSynchronization(TIM_HandleTypeDef *htim,
  800830a:	6023      	str	r3, [r4, #0]
  800830c:	bd38      	pop	{r3, r4, r5, pc}
  800830e:	bf00      	nop
- 8008310:	20025df8 	.word	0x20025df8
+ 8008310:	20025df4 	.word	0x20025df4
 
 08008314 <_isatty_r>:
  8008314:	b538      	push	{r3, r4, r5, lr}
@@ -20308,7 +20316,7 @@ HAL_StatusTypeDef HAL_TIMEx_MasterConfigSynchronization(TIM_HandleTypeDef *htim,
  800832a:	b103      	cbz	r3, 800832e <_isatty_r+0x1a>
  800832c:	6023      	str	r3, [r4, #0]
  800832e:	bd38      	pop	{r3, r4, r5, pc}
- 8008330:	20025df8 	.word	0x20025df8
+ 8008330:	20025df4 	.word	0x20025df4
 
 08008334 <_lseek_r>:
  8008334:	b538      	push	{r3, r4, r5, lr}
@@ -20326,7 +20334,7 @@ HAL_StatusTypeDef HAL_TIMEx_MasterConfigSynchronization(TIM_HandleTypeDef *htim,
  800834e:	b103      	cbz	r3, 8008352 <_lseek_r+0x1e>
  8008350:	6023      	str	r3, [r4, #0]
  8008352:	bd38      	pop	{r3, r4, r5, pc}
- 8008354:	20025df8 	.word	0x20025df8
+ 8008354:	20025df4 	.word	0x20025df4
 
 08008358 <_read_r>:
  8008358:	b538      	push	{r3, r4, r5, lr}
@@ -20344,7 +20352,7 @@ HAL_StatusTypeDef HAL_TIMEx_MasterConfigSynchronization(TIM_HandleTypeDef *htim,
  8008372:	b103      	cbz	r3, 8008376 <_read_r+0x1e>
  8008374:	6023      	str	r3, [r4, #0]
  8008376:	bd38      	pop	{r3, r4, r5, pc}
- 8008378:	20025df8 	.word	0x20025df8
+ 8008378:	20025df4 	.word	0x20025df4
 
 0800837c <_sbrk_r>:
  800837c:	b538      	push	{r3, r4, r5, lr}
@@ -20360,7 +20368,7 @@ HAL_StatusTypeDef HAL_TIMEx_MasterConfigSynchronization(TIM_HandleTypeDef *htim,
  8008392:	b103      	cbz	r3, 8008396 <_sbrk_r+0x1a>
  8008394:	6023      	str	r3, [r4, #0]
  8008396:	bd38      	pop	{r3, r4, r5, pc}
- 8008398:	20025df8 	.word	0x20025df8
+ 8008398:	20025df4 	.word	0x20025df4
 
 0800839c <_write_r>:
  800839c:	b538      	push	{r3, r4, r5, lr}
@@ -20378,7 +20386,7 @@ HAL_StatusTypeDef HAL_TIMEx_MasterConfigSynchronization(TIM_HandleTypeDef *htim,
  80083b6:	b103      	cbz	r3, 80083ba <_write_r+0x1e>
  80083b8:	6023      	str	r3, [r4, #0]
  80083ba:	bd38      	pop	{r3, r4, r5, pc}
- 80083bc:	20025df8 	.word	0x20025df8
+ 80083bc:	20025df4 	.word	0x20025df4
 
 080083c0 <memcpy>:
  80083c0:	440a      	add	r2, r1
@@ -20462,7 +20470,7 @@ HAL_StatusTypeDef HAL_TIMEx_MasterConfigSynchronization(TIM_HandleTypeDef *htim,
  8008466:	e7ca      	b.n	80083fe <_free_r+0x22>
  8008468:	bd38      	pop	{r3, r4, r5, pc}
  800846a:	bf00      	nop
- 800846c:	20025df4 	.word	0x20025df4
+ 800846c:	20025df0 	.word	0x20025df0
 
 08008470 <_malloc_usable_size_r>:
  8008470:	f851 3c04 	ldr.w	r3, [r1, #-4]

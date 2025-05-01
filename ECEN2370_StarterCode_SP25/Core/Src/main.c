@@ -93,6 +93,7 @@ int main(void)
 
   /* Configure the system clock */
   SystemClock_Config();
+  //__HAL_RCC_RNG_CLK_ENABLE();
 
   /* USER CODE BEGIN SysInit */
 
